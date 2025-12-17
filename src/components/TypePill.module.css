@@ -1,0 +1,73 @@
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  border: 1px solid color-mix(in srgb, var(--pokechu-color-border) 70%, transparent);
+  color: var(--pokechu-color-type-text);
+}
+
+.type_unknown {
+  background: var(--pokechu-color-surface-2);
+}
+
+.type_fire {
+  background: var(--pokechu-color-fire);
+}
+.type_water {
+  background: var(--pokechu-color-water);
+}
+.type_grass {
+  background: var(--pokechu-color-grass);
+}
+.type_electric {
+  background: var(--pokechu-color-electric);
+}
+.type_ice {
+  background: var(--pokechu-color-ice);
+}
+.type_fighting {
+  background: var(--pokechu-color-fighting);
+}
+.type_poison {
+  background: var(--pokechu-color-poison);
+}
+.type_ground {
+  background: var(--pokechu-color-ground);
+}
+.type_flying {
+  background: var(--pokechu-color-flying);
+}
+.type_psychic {
+  background: var(--pokechu-color-psychic);
+}
+.type_bug {
+  background: var(--pokechu-color-bug);
+}
+.type_rock {
+  background: var(--pokechu-color-rock);
+}
+.type_ghost {
+  background: var(--pokechu-color-ghost);
+}
+.type_dragon {
+  background: var(--pokechu-color-dragon);
+}
+.type_dark {
+  background: var(--pokechu-color-dark);
+}
+.type_steel {
+  background: var(--pokechu-color-steel);
+}
+.type_fairy {
+  background: var(--pokechu-color-fairy);
+}
+.type_normal {
+  background: var(--pokechu-color-normal);
+}
+

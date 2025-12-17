@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Pokéball">
+  <defs>
+    <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#ff3b30"/>
+      <stop offset="1" stop-color="#c1121f"/>
+    </linearGradient>
+  </defs>
+  <circle cx="256" cy="256" r="236" fill="url(#g)"/>
+  <path d="M20 256c0 130 106 236 236 236s236-106 236-236H20z" fill="#f4f6ff"/>
+  <path d="M22 236h468c6 0 10 4 10 10v20c0 6-4 10-10 10H22c-6 0-10-4-10-10v-20c0-6 4-10 10-10z" fill="#101524"/>
+  <circle cx="256" cy="256" r="74" fill="#101524"/>
+  <circle cx="256" cy="256" r="54" fill="#f4f6ff"/>
+  <circle cx="256" cy="256" r="34" fill="#e5e7ef"/>
+  <circle cx="256" cy="256" r="236" fill="none" stroke="#101524" stroke-width="22"/>
+</svg>
+

@@ -1,0 +1,25 @@
+{
+  "id": "/",
+  "name": "PokeChu",
+  "short_name": "PokeChu",
+  "description": "Random Gen 1 Pokémon encounters and captures (offline-first).",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0f1c",
+  "theme_color": "#ee1515",
+  "icons": [
+    {
+      "src": "/icons/pokeball.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/icons/pokeball-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

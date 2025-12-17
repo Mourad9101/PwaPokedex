@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Pokéball maskable">
+  <rect x="0" y="0" width="512" height="512" fill="#0b0f1c"/>
+  <g transform="translate(0,0)">
+    <defs>
+      <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#ff3b30"/>
+        <stop offset="1" stop-color="#c1121f"/>
+      </linearGradient>
+    </defs>
+    <circle cx="256" cy="256" r="216" fill="url(#g)"/>
+    <path d="M40 256c0 119.3 96.7 216 216 216s216-96.7 216-216H40z" fill="#f4f6ff"/>
+    <path d="M44 240h424c6.6 0 12 5.4 12 12v8c0 6.6-5.4 12-12 12H44c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12z" fill="#101524"/>
+    <circle cx="256" cy="256" r="68" fill="#101524"/>
+    <circle cx="256" cy="256" r="48" fill="#f4f6ff"/>
+    <circle cx="256" cy="256" r="28" fill="#e5e7ef"/>
+    <circle cx="256" cy="256" r="216" fill="none" stroke="#101524" stroke-width="18"/>
+  </g>
+</svg>
+

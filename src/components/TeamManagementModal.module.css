@@ -1,0 +1,109 @@
+.text {
+  margin: 0 0 0.85rem;
+  color: var(--pokechu-color-muted);
+  font-weight: 650;
+}
+
+.grid {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.slot {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  border: 1px solid var(--pokechu-glass-border);
+  background:
+    radial-gradient(circle at 14% 0%, rgba(238, 21, 21, 0.12), transparent 55%),
+    color-mix(in srgb, var(--pokechu-glass-2) 85%, transparent);
+  border-radius: var(--pokechu-radius-lg);
+  padding: 0.55rem;
+}
+
+.slot:hover {
+  filter: brightness(1.02);
+}
+
+.sprite {
+  width: 72px;
+  height: 72px;
+  image-rendering: pixelated;
+}
+
+.info {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.name {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.shiny {
+  font-size: 0.7rem;
+  font-weight: 900;
+  padding: 0.15rem 0.4rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--pokechu-color-shiny) 22%, var(--pokechu-color-surface));
+  border: 1px solid color-mix(in srgb, var(--pokechu-color-shiny) 45%, var(--pokechu-color-border));
+}
+
+.fav {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--pokechu-radius-sm);
+  border: 1px solid var(--pokechu-glass-border);
+  background: color-mix(in srgb, var(--pokechu-glass-1) 70%, transparent);
+  color: color-mix(in srgb, var(--pokechu-color-muted) 70%, transparent);
+  font-size: 1.1rem;
+  display: grid;
+  place-items: center;
+}
+
+.favActive {
+  color: var(--pokechu-color-favorite);
+}
+
+.release {
+  justify-self: start;
+  border: 1px solid color-mix(in srgb, var(--pokechu-color-danger) 45%, var(--pokechu-color-border));
+  background: color-mix(in srgb, var(--pokechu-color-danger) 15%, var(--pokechu-color-surface));
+  color: var(--pokechu-color-text);
+  border-radius: var(--pokechu-radius-md);
+  padding: 0.45rem 0.65rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.buttonIcon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  opacity: 0.94;
+}
+
+.releaseIcon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.18));
+}
+
+.iconOnly {
+  width: 18px;
+  height: 18px;
+}

@@ -1,0 +1,114 @@
+.app {
+  min-height: 100vh;
+  color: var(--pokechu-color-text);
+  padding-bottom: 1.5rem;
+}
+
+.topDockWrap {
+  position: relative;
+  width: min(1200px, calc(100vw - 1.5rem));
+  margin: calc(0.85rem + env(safe-area-inset-top)) auto 0;
+  height: 44px;
+  padding-bottom: var(--pokechu-logo-reserve);
+}
+
+.centerLogoWrap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, var(--pokechu-logo-offset-y));
+}
+
+.centerLogo {
+  width: var(--pokechu-logo-size);
+  height: var(--pokechu-logo-size);
+  object-fit: contain;
+  object-position: top center;
+  filter: drop-shadow(0 24px 46px rgba(0, 0, 0, 0.32));
+}
+
+.dock {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.iconButton {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  border: 1px solid var(--pokechu-glass-border);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.2), transparent 55%),
+    linear-gradient(180deg, var(--pokechu-glass-1), var(--pokechu-glass-2));
+  border-radius: 999px;
+  color: var(--pokechu-color-text);
+  box-shadow:
+    0 18px 46px rgba(16, 21, 36, 0.14),
+    inset 0 1px 0 var(--pokechu-glass-highlight);
+  backdrop-filter: blur(var(--pokechu-blur));
+}
+
+.iconButton:hover {
+  filter: brightness(1.03);
+}
+
+.iconButtonActive {
+  border-color: color-mix(in srgb, var(--pokechu-color-success) 55%, var(--pokechu-glass-border));
+  color: color-mix(in srgb, var(--pokechu-color-success) 70%, var(--pokechu-color-text));
+}
+
+.iconButtonActive::after {
+  content: '';
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--pokechu-color-success);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+.svgIcon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  opacity: 0.95;
+}
+
+.imgIcon {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  image-rendering: auto;
+}
+
+.main {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  padding: 1rem 1rem 1.25rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.primary {
+  min-width: 0;
+}
+
+.secondary {
+  min-width: 0;
+}
+
+@media (min-width: 960px) {
+  .main {
+    grid-template-columns: 1.5fr 1fr;
+    align-items: start;
+  }
+}
