@@ -5,13 +5,9 @@ import { Modal } from './Modal'
 import { Icon } from './Icon'
 import type { NotificationPermissionState } from '../lib/notifications'
 
-type Theme = 'light' | 'dark'
-
 export function SettingsModal({
   open,
   onClose,
-  theme,
-  onToggleTheme,
   soundEnabled,
   soundVolume,
   onToggleSound,
@@ -22,8 +18,6 @@ export function SettingsModal({
 }: {
   open: boolean
   onClose: () => void
-  theme: Theme
-  onToggleTheme: () => void
   soundEnabled: boolean
   soundVolume: number
   onToggleSound: () => void
@@ -49,21 +43,6 @@ export function SettingsModal({
         <div className={styles.content}>
           <section className={styles.section}>
             <p className={styles.sectionTitle}>Controls</p>
-
-            <div className={styles.row}>
-              <div className={styles.rowLeft}>
-                <Icon className={styles.rowIcon} name={theme === 'dark' ? 'moon' : 'sun'} />
-                <div className={styles.rowText}>
-                  <div className={styles.rowLabel}>Theme</div>
-                  <div className={styles.rowHint}>
-                    Currently <span className={styles.muted}>{theme}</span>
-                  </div>
-                </div>
-              </div>
-              <button type="button" className={styles.action} onClick={onToggleTheme}>
-                {theme === 'dark' ? 'Switch to light' : 'Switch to dark'}
-              </button>
-            </div>
 
             <div className={styles.row}>
               <div className={styles.rowLeft}>
@@ -96,7 +75,7 @@ export function SettingsModal({
                 </div>
               </div>
               <button type="button" className={styles.action} onClick={onToggleSound}>
-                {soundEnabled ? 'Disable' : 'Enable'}
+                {soundEnabled ? 'Enabled' : 'Disabled'}
               </button>
             </div>
 

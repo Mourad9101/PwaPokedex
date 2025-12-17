@@ -658,8 +658,6 @@ export default function App() {
       <SettingsModal
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)}
-        theme={preferences.theme}
-        onToggleTheme={toggleTheme}
         soundEnabled={preferences.soundEnabled}
         soundVolume={preferences.soundVolume}
         onToggleSound={toggleSound}
