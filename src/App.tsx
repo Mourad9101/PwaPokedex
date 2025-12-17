@@ -7,6 +7,8 @@ import {
 } from './lib/notifications'
 import { fetchPokemonById, formatPokemonName, getCachedPokemonIds } from './lib/pokeapi'
 import { randomFloatInclusive, randomIntInclusive } from './lib/random'
+import { GEN_1_MAX_ID, MAX_TEAM_SIZE, MAX_THROWS_PER_ENCOUNTER, SHINY_PROBABILITY } from './constants/game'
+import { makeId } from './lib/id'
 import { storageKeys } from './lib/storage'
 import { playSfx } from './lib/sfx'
 import { EncounterCard } from './components/EncounterCard'
@@ -20,11 +22,6 @@ import { PokedexView } from './views/PokedexView'
 import styles from './App.module.css'
 
 import playerIcon from './assets/icons/player.png'
-
-const GEN_1_MAX_ID = 151
-const MAX_THROWS_PER_ENCOUNTER = 3
-const MAX_TEAM_SIZE = 6
-const SHINY_PROBABILITY = 1 / 512
 
 type Theme = 'light' | 'dark'
 type View = 'game' | 'pokedex'
@@ -168,8 +165,7 @@ export default function App() {
   }, [favorites, setFavorites])
 
   const addToast = useCallback((message: string, tone: ToastTone = 'info') => {
-    const id =
-      globalThis.crypto?.randomUUID?.() ?? String(Date.now() + Math.random())
+    const id = makeId()
     setToasts((current) => [{ id, message, tone }, ...current].slice(0, 4))
     window.setTimeout(() => {
       setToasts((current) => current.filter((t) => t.id !== id))
@@ -410,7 +406,7 @@ export default function App() {
 
     if (didCapture) {
       if (teamIsFull) {
-        const fxId = globalThis.crypto?.randomUUID?.() ?? String(Date.now() + Math.random())
+        const fxId = makeId()
         throwFxIdRef.current = fxId
         setThrowFx({ id: fxId, variant: 'break' })
         window.setTimeout(() => {
@@ -423,7 +419,7 @@ export default function App() {
         }, 980)
         return
       }
-      const fxId = globalThis.crypto?.randomUUID?.() ?? String(Date.now() + Math.random())
+      const fxId = makeId()
       throwFxIdRef.current = fxId
       setThrowFx({ id: fxId, variant: 'capture' })
 
@@ -457,7 +453,7 @@ export default function App() {
 
     const remaining = attemptsLeft - 1
     if (remaining > 0) {
-      const fxId = globalThis.crypto?.randomUUID?.() ?? String(Date.now() + Math.random())
+      const fxId = makeId()
       throwFxIdRef.current = fxId
       setThrowFx({ id: fxId, variant: 'break' })
       window.setTimeout(() => {
@@ -475,7 +471,7 @@ export default function App() {
 
     setStats((current) => ({ ...current, failedEncounters: current.failedEncounters + 1 }))
     {
-      const fxId = globalThis.crypto?.randomUUID?.() ?? String(Date.now() + Math.random())
+      const fxId = makeId()
       throwFxIdRef.current = fxId
       setThrowFx({ id: fxId, variant: 'break' })
       window.setTimeout(() => {
