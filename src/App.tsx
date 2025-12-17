@@ -9,6 +9,7 @@ import { fetchPokemonById, formatPokemonName, getCachedPokemonIds } from './lib/
 import { randomFloatInclusive, randomIntInclusive } from './lib/random'
 import { GEN_1_MAX_ID, MAX_TEAM_SIZE, MAX_THROWS_PER_ENCOUNTER, SHINY_PROBABILITY } from './constants/game'
 import { makeId } from './lib/id'
+import { resetAppData } from './lib/resetAppData'
 import { storageKeys } from './lib/storage'
 import { playSfx } from './lib/sfx'
 import { EncounterCard } from './components/EncounterCard'
@@ -173,30 +174,7 @@ export default function App() {
   }, [])
 
   const resetStorage = useCallback(async () => {
-    addToast('Resetting app…', 'info')
-
-    try {
-      try {
-        Object.values(storageKeys).forEach((key) => localStorage.removeItem(key))
-      } catch {
-      }
-
-      if ('caches' in window) {
-        const keys = await window.caches.keys()
-        await Promise.all(
-          keys.filter((key) => key.startsWith('pokechu-')).map((key) => window.caches.delete(key)),
-        )
-      }
-
-      if ('serviceWorker' in navigator) {
-        const regs = await navigator.serviceWorker.getRegistrations()
-        await Promise.all(regs.map((reg) => reg.unregister()))
-      }
-    } catch {
-      addToast('Could not fully reset (cache/SW). Reloading anyway…', 'warning')
-    }
-
-    window.setTimeout(() => window.location.reload(), 450)
+    await resetAppData(addToast)
   }, [addToast])
 
   const playUiSound = useCallback(() => {
