@@ -5,6 +5,17 @@ import { randomFloatInclusive, randomIntInclusive } from '../lib/random'
 import { playSfx } from '../lib/sfx'
 import { makeId } from '../lib/id'
 import { GEN_1_MAX_ID, MAX_THROWS_PER_ENCOUNTER, SHINY_PROBABILITY } from '../constants/game'
+import {
+  BREAK_SFX_DELAY_MS,
+  CAPTURE_NEXT_ENCOUNTER_MS,
+  CAPTURE_SHAKE_1_MS,
+  CAPTURE_SHAKE_2_MS,
+  CAPTURE_SHAKE_3_MS,
+  CAPTURE_SUCCESS_MS,
+  FAIL_NEXT_ENCOUNTER_MS,
+  PENDING_RELEASE_NEXT_ENCOUNTER_MS,
+  THROW_FX_CLEAR_MS,
+} from '../constants/timing'
 import type { CapturedPokemon, Pokedex, Preferences, Stats, ToastTone } from '../types'
 
 type PokemonApi = Awaited<ReturnType<typeof fetchPokemonById>>
@@ -223,7 +234,7 @@ export function useEncounterFlow({
           setPendingCapture({ pokemon: encounter.pokemon, shiny: encounter.shiny })
           void playSfx('break', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
           addToast(`Your team is full (${maxTeamSize}). Release one Pokémon to continue.`, 'warning')
-        }, 980)
+        }, THROW_FX_CLEAR_MS)
         return
       }
       const fxId = makeId()
@@ -233,28 +244,28 @@ export function useEncounterFlow({
       window.setTimeout(() => {
         if (throwFxIdRef.current !== fxId) return
         void playSfx('shake', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
-      }, 820)
+      }, CAPTURE_SHAKE_1_MS)
       window.setTimeout(() => {
         if (throwFxIdRef.current !== fxId) return
         void playSfx('shake', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
-      }, 1040)
+      }, CAPTURE_SHAKE_2_MS)
       window.setTimeout(() => {
         if (throwFxIdRef.current !== fxId) return
         void playSfx('shake', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
-      }, 1260)
+      }, CAPTURE_SHAKE_3_MS)
 
       window.setTimeout(() => {
         if (throwFxIdRef.current !== fxId) return
         capturePokemonNow(encounter.pokemon, encounter.shiny)
         void playSfx('capture', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
-      }, 1480)
+      }, CAPTURE_SUCCESS_MS)
 
       window.setTimeout(() => {
         if (throwFxIdRef.current !== fxId) return
         setThrowFx(null)
         throwFxIdRef.current = null
         newEncounter()
-      }, 1780)
+      }, CAPTURE_NEXT_ENCOUNTER_MS)
       return
     }
 
@@ -267,11 +278,11 @@ export function useEncounterFlow({
         if (throwFxIdRef.current !== fxId) return
         setThrowFx(null)
         throwFxIdRef.current = null
-      }, 980)
+      }, THROW_FX_CLEAR_MS)
       window.setTimeout(() => {
         if (throwFxIdRef.current !== fxId) return
         void playSfx('break', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
-      }, 780)
+      }, BREAK_SFX_DELAY_MS)
       addToast('Oh no! It broke free.', 'warning')
       return
     }
@@ -285,14 +296,14 @@ export function useEncounterFlow({
         if (throwFxIdRef.current !== fxId) return
         setThrowFx(null)
         throwFxIdRef.current = null
-      }, 980)
+      }, THROW_FX_CLEAR_MS)
       window.setTimeout(() => {
         if (throwFxIdRef.current !== fxId) return
         void playSfx('break', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
-      }, 780)
+      }, BREAK_SFX_DELAY_MS)
     }
     addToast('It fled after 3 failed throws...', 'warning')
-    window.setTimeout(() => newEncounter(), 650)
+    window.setTimeout(() => newEncounter(), FAIL_NEXT_ENCOUNTER_MS)
   }, [
     addToast,
     attemptsLeft,
@@ -335,7 +346,7 @@ export function useEncounterFlow({
       if (!pendingCapture) return
       capturePokemonNow(pendingCapture.pokemon, pendingCapture.shiny)
       setPendingCapture(null)
-      window.setTimeout(() => newEncounter(), 600)
+      window.setTimeout(() => newEncounter(), PENDING_RELEASE_NEXT_ENCOUNTER_MS)
     },
     [capturePokemonNow, newEncounter, pendingCapture, releasePokemon],
   )
