@@ -5,40 +5,7 @@ import { randomFloatInclusive, randomIntInclusive } from '../lib/random'
 import { playSfx } from '../lib/sfx'
 import { makeId } from '../lib/id'
 import { GEN_1_MAX_ID, MAX_THROWS_PER_ENCOUNTER, SHINY_PROBABILITY } from '../constants/game'
-
-type Stats = {
-  encounters: number
-  captures: number
-  shinyEncounters: number
-  flees: number
-  failedEncounters: number
-  throws: number
-}
-
-type CapturedPokemon = {
-  id: number
-  name: string
-  sprite: string | null
-  types: string[]
-  shiny: boolean
-  capturedAt: string
-}
-
-type PokedexEntry = {
-  id: number
-  name: string
-  timesEncountered: number
-  shinySeen: boolean
-  capturedEver: boolean
-  releasedCount: number
-}
-
-type Pokedex = Record<number, PokedexEntry>
-
-type Preferences = {
-  soundEnabled: boolean
-  soundVolume: number
-}
+import type { CapturedPokemon, Pokedex, Preferences, Stats, ToastTone } from '../types'
 
 type PokemonApi = Awaited<ReturnType<typeof fetchPokemonById>>
 
@@ -69,8 +36,6 @@ type PendingCapture = {
   pokemon: PokemonApi
   shiny: boolean
 }
-
-type ToastTone = 'info' | 'success' | 'warning' | 'shiny'
 
 function updatePokedexOnEncounter(current: Pokedex, pokemon: PokemonApi, shiny: boolean): Pokedex {
   const existing = current[pokemon.id]
@@ -113,7 +78,7 @@ export function useEncounterFlow({
   teamIsFull,
   maxTeamSize,
 }: {
-  preferences: Preferences
+  preferences: Pick<Preferences, 'soundEnabled' | 'soundVolume'>
   captured: CapturedPokemon[]
   setCaptured: React.Dispatch<React.SetStateAction<CapturedPokemon[]>>
   setStats: React.Dispatch<React.SetStateAction<Stats>>

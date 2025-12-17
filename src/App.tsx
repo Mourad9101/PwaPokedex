@@ -20,46 +20,10 @@ import { Icon } from './components/Icon'
 import { SettingsModal } from './components/SettingsModal'
 import { PokedexView } from './views/PokedexView'
 import styles from './App.module.css'
+import type { CapturedPokemon, Pokedex, Preferences, Stats, Theme } from './types'
 
 import playerIcon from './assets/icons/player.png'
-
-type Theme = 'light' | 'dark'
 type View = 'game' | 'pokedex'
-
-type Preferences = {
-  theme: Theme
-  soundEnabled: boolean
-  soundVolume: number
-}
-
-type Stats = {
-  encounters: number
-  captures: number
-  shinyEncounters: number
-  flees: number
-  failedEncounters: number
-  throws: number
-}
-
-type CapturedPokemon = {
-  id: number
-  name: string
-  sprite: string | null
-  types: string[]
-  shiny: boolean
-  capturedAt: string
-}
-
-type PokedexEntry = {
-  id: number
-  name: string
-  timesEncountered: number
-  shinySeen: boolean
-  capturedEver: boolean
-  releasedCount: number
-}
-
-type Pokedex = Record<number, PokedexEntry>
 
 const defaultTheme: Theme =
   window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ? 'dark' : 'light'

@@ -3,17 +3,7 @@ import { formatPokemonName } from '../lib/pokeapi'
 import { Icon } from './Icon'
 import releaseIcon from '../assets/icons/release.png'
 import pokedexIcon from '../assets/icons/pokedex.png'
-
-type CapturedPokemon = {
-  id: number
-  name: string
-  sprite: string | null
-  types: string[]
-  shiny: boolean
-  capturedAt: string
-}
-
-type Pokedex = Record<number, unknown>
+import type { CapturedPokemon, Pokedex } from '../types'
 
 export function TeamPanel({
   captured,

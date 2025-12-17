@@ -1,6 +1,5 @@
 import { storageKeys } from './storage'
-
-type ToastTone = 'info' | 'success' | 'warning' | 'shiny'
+import type { ToastTone } from '../types'
 
 export async function resetAppData(addToast: (message: string, tone?: ToastTone) => void) {
   addToast('Resetting app…', 'info')
@@ -29,4 +28,3 @@ export async function resetAppData(addToast: (message: string, tone?: ToastTone)
 
   window.setTimeout(() => window.location.reload(), 450)
 }
-

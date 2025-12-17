@@ -1,7 +1,5 @@
 import styles from './Toasts.module.css'
-
-type ToastTone = 'info' | 'success' | 'warning' | 'shiny'
-type Toast = { id: string; message: string; tone: ToastTone }
+import type { Toast } from '../types'
 
 export function Toasts({ toasts }: { toasts: Toast[] }) {
   if (!toasts?.length) return null

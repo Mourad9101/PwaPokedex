@@ -1,13 +1,12 @@
 import { useCallback, useState } from 'react'
-
-export type ToastTone = 'info' | 'success' | 'warning' | 'shiny'
-export type Toast = { id: string; message: string; tone: ToastTone }
+import { makeId } from '../lib/id'
+import type { Toast, ToastTone } from '../types'
 
 export function useToasts() {
   const [toasts, setToasts] = useState<Toast[]>([])
 
   const addToast = useCallback((message: string, tone: ToastTone = 'info') => {
-    const id = globalThis.crypto?.randomUUID?.() ?? String(Date.now() + Math.random())
+    const id = makeId()
     setToasts((current) => [{ id, message, tone }, ...current].slice(0, 4))
     window.setTimeout(() => {
       setToasts((current) => current.filter((t) => t.id !== id))
@@ -16,4 +15,3 @@ export function useToasts() {
 
   return { toasts, addToast } as const
 }
-
