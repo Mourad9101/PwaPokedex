@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useLocalStorageState } from './hooks/useLocalStorageState'
+import { useToasts } from './hooks/useToasts'
 import {
   ensureNotificationPermission,
   notify,
@@ -92,9 +93,6 @@ type PendingCapture = {
   shiny: boolean
 }
 
-type ToastTone = 'info' | 'success' | 'warning' | 'shiny'
-type Toast = { id: string; message: string; tone: ToastTone }
-
 const defaultTheme: Theme =
   window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ? 'dark' : 'light'
 
@@ -138,7 +136,7 @@ export default function App() {
   })
   const [pendingCapture, setPendingCapture] = useState<PendingCapture | null>(null)
   const [throwFx, setThrowFx] = useState<{ id: string; variant: 'capture' | 'break' } | null>(null)
-  const [toasts, setToasts] = useState<Toast[]>([])
+  const { toasts, addToast } = useToasts()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermissionState>(
     () => {
@@ -164,14 +162,6 @@ export default function App() {
     if (unique.length === favorites.length) return
     setFavorites(unique)
   }, [favorites, setFavorites])
-
-  const addToast = useCallback((message: string, tone: ToastTone = 'info') => {
-    const id = makeId()
-    setToasts((current) => [{ id, message, tone }, ...current].slice(0, 4))
-    window.setTimeout(() => {
-      setToasts((current) => current.filter((t) => t.id !== id))
-    }, 3200)
-  }, [])
 
   const resetStorage = useCallback(async () => {
     await resetAppData(addToast)
