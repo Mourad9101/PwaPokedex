@@ -1,16 +1,40 @@
-# React + Vite
+# PokeChu (PWA Pokédex Game)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Single-page (no router) PWA game: discover random Gen 1 encounters, catch Pokémon (rule of 6), and browse your Pokédex view (with a Gen 1-era TCG card preview via the TCGdex API).
 
-Currently, two official plugins are available:
+## Live
+- GitHub Pages: `https://mourad9101.github.io/PwaPokedex/`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+- One page, zero router (game view ↔ pokédex view)
+- Data from PokéAPI (one Pokémon at a time, no “load all 151”)
+- LocalStorage persistence (team, stats, settings)
+- Offline-first Service Worker caching (app shell + sprites + PokéAPI)
+- Native notifications (optional)
+- Sound effects (optional)
+- Pokédex view with a single “Gen 1-era” TCG card preview (TCGdex API)
 
-## React Compiler
+## Tech
+- Vite + React + TypeScript
+- Custom UI (CSS / glassmorphism)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Run locally
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+Build / preview:
+```bash
+npm run build
+npm run preview
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Install on iPhone (PWA)
+1. Open the live URL in **Safari**.
+2. Tap **Share** → **Add to Home Screen**.
+3. Launch from the icon for a standalone app experience.
+
+## Deploy (GitHub Pages)
+This repo deploys automatically on pushes to `main` using GitHub Actions.
+- GitHub → **Settings → Pages** → **Source: GitHub Actions**
