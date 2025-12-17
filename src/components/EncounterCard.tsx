@@ -1,5 +1,6 @@
 import styles from './EncounterCard.module.css'
 import { formatPokemonName } from '../lib/pokeapi'
+import { formatDexNumber } from '../lib/format'
 import { TypePill } from './TypePill'
 import { Icon } from './Icon'
 import gotchaIcon from '../assets/icons/gotcha.png'
@@ -70,7 +71,7 @@ export function EncounterCard({
           </h2>
           {encounter.status === 'ready' && (
             <p className={styles.meta}>
-              #{String(encounter.pokemon.id).padStart(3, '0')}
+              {formatDexNumber(encounter.pokemon.id)}
               {encounter.shiny ? ' • Shiny' : ''}
             </p>
           )}

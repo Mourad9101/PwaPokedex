@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import styles from './PokedexView.module.css'
 import { Icon } from '../components/Icon'
 import { formatPokemonName } from '../lib/pokeapi'
+import { formatDexNumber } from '../lib/format'
 import arrowIcon from '../assets/icons/arrow.png'
 import { fetchTcgdexCardById, searchTcgdexCardsByPokemonName, tcgdexHighImageUrl } from '../lib/tcgdex'
 import type { Pokedex, PokedexEntry } from '../types'
@@ -213,7 +214,7 @@ export function PokedexView({
                   }}
                   aria-pressed={isSelected}
                 >
-                  <span className={styles.id}>#{String(entry.id).padStart(3, '0')}</span>
+                  <span className={styles.id}>{formatDexNumber(entry.id)}</span>
                   <span className={styles.name}>{displayName}</span>
                   <span className={styles.badges} aria-hidden="true">
                     {inTeam ? <span className={styles.badge}>Team</span> : null}
@@ -239,7 +240,7 @@ export function PokedexView({
               <div className={styles.detailHeader}>
                 <div className={styles.detailTitle}>{formatPokemonName(selectedEntry.name)}</div>
                 <div className={styles.detailActions}>
-                  <div className={styles.detailId}>#{String(selectedEntry.id).padStart(3, '0')}</div>
+                  <div className={styles.detailId}>{formatDexNumber(selectedEntry.id)}</div>
                   <button
                     type="button"
                     className={`${styles.favButton} ${favorites.has(selectedEntry.id) ? styles.favActive : ''}`}
