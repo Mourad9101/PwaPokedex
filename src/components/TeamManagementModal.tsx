@@ -3,6 +3,7 @@ import { Modal } from './Modal'
 import { formatPokemonName } from '../lib/pokeapi'
 import { Icon } from './Icon'
 import releaseIcon from '../assets/icons/release.png'
+import { MAX_TEAM_SIZE } from '../constants/game'
 
 export function TeamManagementModal({
   open,
@@ -28,11 +29,11 @@ export function TeamManagementModal({
   return (
     <Modal
       open={open}
-      title="Team full: Rule of 6"
+      title={`Team full: Rule of ${MAX_TEAM_SIZE}`}
     >
       <p className={styles.text}>
-        You tried to capture <strong>{pendingPokemonName}</strong>, but your team already has 6
-        Pokémon. Release one to continue.
+        You tried to capture <strong>{pendingPokemonName}</strong>, but your team already has{' '}
+        {MAX_TEAM_SIZE} Pokémon. Release one to continue.
       </p>
 
       <div className={styles.grid} role="list">

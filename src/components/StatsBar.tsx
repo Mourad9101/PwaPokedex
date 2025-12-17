@@ -2,6 +2,7 @@ import styles from './StatsBar.module.css'
 import { Icon } from './Icon'
 import crownIcon from '../assets/icons/crown.png'
 import type { Stats } from '../types'
+import { MAX_TEAM_SIZE } from '../constants/game'
 
 export function StatsBar({ stats, teamSize }: { stats: Stats; teamSize: number }) {
   return (
@@ -51,7 +52,9 @@ export function StatsBar({ stats, teamSize }: { stats: Stats; teamSize: number }
           <Icon className={styles.labelIcon} name="book" />
           Team
         </span>
-        <span className={styles.value}>{teamSize}/6</span>
+        <span className={styles.value}>
+          {teamSize}/{MAX_TEAM_SIZE}
+        </span>
       </div>
     </section>
   )

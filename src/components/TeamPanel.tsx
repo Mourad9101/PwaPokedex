@@ -4,6 +4,7 @@ import { Icon } from './Icon'
 import releaseIcon from '../assets/icons/release.png'
 import pokedexIcon from '../assets/icons/pokedex.png'
 import type { CapturedPokemon, Pokedex } from '../types'
+import { MAX_TEAM_SIZE } from '../constants/game'
 
 export function TeamPanel({
   captured,
@@ -38,7 +39,9 @@ export function TeamPanel({
             <img className={styles.pokedexIcon} src={pokedexIcon} alt="" aria-hidden="true" />
             Pokédex <span className={styles.pokedexMeta}>{encounteredCount} seen</span>
           </button>
-          <span className={styles.badge}>{captured.length}/6</span>
+          <span className={styles.badge}>
+            {captured.length}/{MAX_TEAM_SIZE}
+          </span>
         </div>
       </div>
 
