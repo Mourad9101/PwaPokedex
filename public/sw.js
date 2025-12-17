@@ -4,20 +4,34 @@ const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`
 const API_CACHE = `${CACHE_VERSION}-pokeapi`
 const SPRITES_CACHE = `${CACHE_VERSION}-sprites`
 
+const SCOPE = self.registration.scope
+function withScope(path) {
+  return new URL(path, SCOPE).toString()
+}
+
+const INDEX_URL = withScope('index.html')
+
 const APP_SHELL_URLS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icons/pokeball.svg',
-  '/icons/pokeball-maskable.svg',
+  withScope(''),
+  INDEX_URL,
+  withScope('manifest.json'),
+  withScope('icons/pokeball.svg'),
+  withScope('icons/pokeball-maskable.svg'),
 ]
 
 function extractAssetUrlsFromHtml(htmlText) {
-  const matches = htmlText.matchAll(/\b(?:href|src)=["'](\/assets\/[^"']+)["']/g)
+  const matches = htmlText.matchAll(/\b(?:href|src)=["']([^"']+)["']/g)
   const assets = new Set()
   for (const match of matches) {
     const url = match?.[1]
-    if (typeof url === 'string' && url.startsWith('/assets/')) assets.add(url)
+    if (typeof url !== 'string') continue
+    if (!url.includes('/assets/')) continue
+    try {
+      const absolute = new URL(url, SCOPE)
+      if (absolute.origin === self.location.origin) assets.add(absolute.toString())
+    } catch {
+      // ignore invalid URLs
+    }
   }
   return Array.from(assets)
 }
@@ -34,7 +48,7 @@ self.addEventListener('install', (event) => {
       await Promise.allSettled(APP_SHELL_URLS.map((url) => cache.add(url)))
 
       try {
-        const indexResponse = await fetch('/index.html', { cache: 'no-store' })
+        const indexResponse = await fetch(INDEX_URL, { cache: 'no-store' })
         if (indexResponse.ok) {
           const html = await indexResponse.text()
           const assetUrls = extractAssetUrlsFromHtml(html)
@@ -127,10 +141,10 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       (async () => {
         try {
-          return await networkFirst(new Request('/index.html'), APP_SHELL_CACHE, 1500)
+          return await networkFirst(new Request(INDEX_URL), APP_SHELL_CACHE, 1500)
         } catch {
           const cache = await caches.open(APP_SHELL_CACHE)
-          const fallback = await cache.match('/index.html')
+          const fallback = await cache.match(INDEX_URL)
           return fallback ?? Response.error()
         }
       })(),

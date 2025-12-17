@@ -163,7 +163,11 @@ export default function App() {
     <div className={styles.app}>
       <div className={styles.topDockWrap} aria-label="Top controls">
         <div className={styles.centerLogoWrap} aria-label="PokeChu">
-          <img className={styles.centerLogo} src="/icons/PokeChu.gif" alt="PokeChu" />
+          <img
+            className={styles.centerLogo}
+            src={`${import.meta.env.BASE_URL}icons/PokeChu.gif`}
+            alt="PokeChu"
+          />
         </div>
         <div className={styles.dock}>
           <button

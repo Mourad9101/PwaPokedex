@@ -146,7 +146,11 @@ export function EncounterCard({
                   className={`${styles.ball} ${remaining ? styles.ballActive : styles.ballUsed}`}
                   title={remaining ? 'Throw available' : 'Used'}
                 >
-                  <img className={styles.ballIcon} src="/icons/pokeball.svg" alt="" />
+                  <img
+                    className={styles.ballIcon}
+                    src={`${import.meta.env.BASE_URL}icons/pokeball.svg`}
+                    alt=""
+                  />
                 </span>
               )
             })}
