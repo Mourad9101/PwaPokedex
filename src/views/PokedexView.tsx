@@ -4,17 +4,7 @@ import { Icon } from '../components/Icon'
 import { formatPokemonName } from '../lib/pokeapi'
 import arrowIcon from '../assets/icons/arrow.png'
 import { fetchTcgdexCardById, searchTcgdexCardsByPokemonName, tcgdexHighImageUrl } from '../lib/tcgdex'
-
-type PokedexEntry = {
-  id: number
-  name: string
-  timesEncountered: number
-  shinySeen: boolean
-  capturedEver: boolean
-  releasedCount: number
-}
-
-type Pokedex = Record<number, PokedexEntry>
+import type { Pokedex, PokedexEntry } from '../types'
 
 type PokedexFilter = 'all' | 'team' | 'captured' | 'favorites' | 'shiny'
 

@@ -47,7 +47,7 @@
   width: 22px;
   height: 22px;
   object-fit: contain;
-  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.22));
+  filter: invert(1) brightness(1.15) drop-shadow(0 10px 16px rgba(0, 0, 0, 0.22));
 }
 
 .meta {
@@ -313,21 +313,6 @@
   background: color-mix(in srgb, var(--pokechu-glass-2) 65%, transparent);
 }
 
-.tcgLink {
-  justify-self: start;
-  text-decoration: none;
-  font-weight: 850;
-  color: var(--pokechu-color-text);
-  border: 1px solid var(--pokechu-glass-border);
-  background: color-mix(in srgb, var(--pokechu-glass-1) 70%, transparent);
-  border-radius: 999px;
-  padding: 0.45rem 0.7rem;
-}
-
-.tcgLink:hover {
-  filter: brightness(1.03);
-}
-
 .detailLoading,
 .detailError {
   border: 1px dashed color-mix(in srgb, var(--pokechu-glass-border) 85%, transparent);
@@ -347,68 +332,6 @@
   color: var(--pokechu-color-muted);
   font-weight: 650;
   font-size: 0.85rem;
-}
-
-.tcgThumbHeader {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
-  color: var(--pokechu-color-muted);
-  font-weight: 850;
-  font-size: 0.9rem;
-}
-
-.tcgThumbCount {
-  border: 1px solid var(--pokechu-glass-border);
-  background: color-mix(in srgb, var(--pokechu-glass-1) 70%, transparent);
-  border-radius: 999px;
-  padding: 0.15rem 0.45rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.tcgThumbs {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.45rem;
-  max-height: 240px;
-  overflow: auto;
-  padding-top: 0.15rem;
-}
-
-.tcgThumb {
-  border: 1px solid var(--pokechu-glass-border);
-  background: color-mix(in srgb, var(--pokechu-glass-2) 65%, transparent);
-  border-radius: var(--pokechu-radius-md);
-  padding: 0.2rem;
-  display: grid;
-  place-items: center;
-}
-
-.tcgThumb:hover {
-  filter: brightness(1.03);
-}
-
-.tcgThumbActive {
-  border-color: color-mix(in srgb, var(--pokechu-color-favorite) 55%, var(--pokechu-glass-border));
-}
-
-.tcgThumbImg {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: calc(var(--pokechu-radius-md) - 4px);
-}
-
-.tcgThumbFallback {
-  color: var(--pokechu-color-muted);
-  font-weight: 900;
-}
-
-@media (min-width: 520px) {
-  .tcgThumbs {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
 }
 
 @media (min-width: 980px) {

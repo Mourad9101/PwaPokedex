@@ -36,6 +36,10 @@
   opacity: 0.9;
 }
 
+.labelIconImg {
+  filter: grayscale(1) brightness(0) invert(0.72);
+}
+
 .value {
   font-weight: 800;
   font-variant-numeric: tabular-nums;
