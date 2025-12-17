@@ -4,7 +4,13 @@ import { fetchPokemonById, formatPokemonName, getCachedPokemonIds } from '../lib
 import { randomFloatInclusive, randomIntInclusive } from '../lib/random'
 import { playSfx } from '../lib/sfx'
 import { makeId } from '../lib/id'
-import { GEN_1_MAX_ID, MAX_THROWS_PER_ENCOUNTER, SHINY_PROBABILITY } from '../constants/game'
+import {
+  CATCH_CHANCE_MAX,
+  CATCH_CHANCE_MIN,
+  GEN_1_MAX_ID,
+  MAX_THROWS_PER_ENCOUNTER,
+  SHINY_PROBABILITY,
+} from '../constants/game'
 import {
   BREAK_SFX_DELAY_MS,
   CAPTURE_NEXT_ENCOUNTER_MS,
@@ -217,7 +223,7 @@ export function useEncounterFlow({
     void playSfx('throw', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
     setStats((current) => ({ ...current, throws: current.throws + 1 }))
 
-    const successChance = randomFloatInclusive(0.1, 0.15)
+    const successChance = randomFloatInclusive(CATCH_CHANCE_MIN, CATCH_CHANCE_MAX)
     const didCapture = Math.random() < successChance
 
     setEncounter((current) => ({ ...current, attemptsUsed: current.attemptsUsed + 1 }))
@@ -302,7 +308,7 @@ export function useEncounterFlow({
         void playSfx('break', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
       }, BREAK_SFX_DELAY_MS)
     }
-    addToast('It fled after 3 failed throws...', 'warning')
+    addToast(`It fled after ${MAX_THROWS_PER_ENCOUNTER} failed throws...`, 'warning')
     window.setTimeout(() => newEncounter(), FAIL_NEXT_ENCOUNTER_MS)
   }, [
     addToast,
