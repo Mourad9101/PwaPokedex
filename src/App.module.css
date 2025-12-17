@@ -98,6 +98,11 @@
   margin: 0 auto;
 }
 
+.mainSingle {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+
 .primary {
   min-width: 0;
 }
@@ -110,5 +115,9 @@
   .main {
     grid-template-columns: 1.5fr 1fr;
     align-items: start;
+  }
+
+  .mainSingle {
+    grid-template-columns: 1fr;
   }
 }

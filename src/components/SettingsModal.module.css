@@ -86,6 +86,15 @@
   filter: brightness(1.03);
 }
 
+.slider {
+  width: 180px;
+  accent-color: var(--pokechu-color-favorite);
+}
+
+.slider:disabled {
+  opacity: 0.5;
+}
+
 .muted {
   color: var(--pokechu-color-muted);
   font-weight: 650;

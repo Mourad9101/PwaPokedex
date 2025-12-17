@@ -12,6 +12,10 @@ export function SettingsModal({
   onClose,
   theme,
   onToggleTheme,
+  soundEnabled,
+  soundVolume,
+  onToggleSound,
+  onSetSoundVolume,
   notificationPermission,
   onEnableNotifications,
   onResetStorage,
@@ -20,6 +24,10 @@ export function SettingsModal({
   onClose: () => void
   theme: Theme
   onToggleTheme: () => void
+  soundEnabled: boolean
+  soundVolume: number
+  onToggleSound: () => void
+  onSetSoundVolume: (volume: number) => void
   notificationPermission: NotificationPermissionState
   onEnableNotifications: () => void
   onResetStorage: () => void
@@ -75,6 +83,43 @@ export function SettingsModal({
               >
                 {notificationPermission === 'granted' ? 'Enabled' : 'Enable'}
               </button>
+            </div>
+
+            <div className={styles.row}>
+              <div className={styles.rowLeft}>
+                <Icon className={styles.rowIcon} name="pokeball" />
+                <div className={styles.rowText}>
+                  <div className={styles.rowLabel}>Sound effects</div>
+                  <div className={styles.rowHint}>
+                    <span className={styles.muted}>{soundEnabled ? 'On' : 'Off'}</span>
+                  </div>
+                </div>
+              </div>
+              <button type="button" className={styles.action} onClick={onToggleSound}>
+                {soundEnabled ? 'Disable' : 'Enable'}
+              </button>
+            </div>
+
+            <div className={styles.row}>
+              <div className={styles.rowLeft}>
+                <Icon className={styles.rowIcon} name="sun" />
+                <div className={styles.rowText}>
+                  <div className={styles.rowLabel}>Volume</div>
+                  <div className={styles.rowHint}>
+                    <span className={styles.muted}>{Math.round(soundVolume * 100)}%</span>
+                  </div>
+                </div>
+              </div>
+              <input
+                className={styles.slider}
+                type="range"
+                min={0}
+                max={100}
+                value={Math.round(soundVolume * 100)}
+                onChange={(e) => onSetSoundVolume(Number(e.target.value) / 100)}
+                disabled={!soundEnabled}
+                aria-label="Sound volume"
+              />
             </div>
           </section>
 

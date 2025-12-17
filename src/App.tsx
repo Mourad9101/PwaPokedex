@@ -8,6 +8,7 @@ import {
 import { fetchPokemonById, formatPokemonName, getCachedPokemonIds } from './lib/pokeapi'
 import { randomFloatInclusive, randomIntInclusive } from './lib/random'
 import { storageKeys } from './lib/storage'
+import { playSfx } from './lib/sfx'
 import { EncounterCard } from './components/EncounterCard'
 import { StatsBar } from './components/StatsBar'
 import { TeamManagementModal } from './components/TeamManagementModal'
@@ -15,6 +16,7 @@ import { TeamPanel } from './components/TeamPanel'
 import { Toasts } from './components/Toasts'
 import { Icon } from './components/Icon'
 import { SettingsModal } from './components/SettingsModal'
+import { PokedexView } from './views/PokedexView'
 import styles from './App.module.css'
 
 import playerIcon from './assets/icons/player.png'
@@ -25,9 +27,12 @@ const MAX_TEAM_SIZE = 6
 const SHINY_PROBABILITY = 1 / 512
 
 type Theme = 'light' | 'dark'
+type View = 'game' | 'pokedex'
 
 type Preferences = {
   theme: Theme
+  soundEnabled: boolean
+  soundVolume: number
 }
 
 type Stats = {
@@ -95,7 +100,11 @@ type Toast = { id: string; message: string; tone: ToastTone }
 const defaultTheme: Theme =
   window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ? 'dark' : 'light'
 
-const initialPreferences: Preferences = { theme: defaultTheme }
+const initialPreferences: Preferences = {
+  theme: defaultTheme,
+  soundEnabled: true,
+  soundVolume: 0.65,
+}
 const initialStats: Stats = {
   encounters: 0,
   captures: 0,
@@ -106,6 +115,7 @@ const initialStats: Stats = {
 }
 
 export default function App() {
+  const [view, setView] = useState<View>('game')
   const [preferences, setPreferences] = useLocalStorageState<Preferences>(
     storageKeys.preferences,
     initialPreferences,
@@ -193,12 +203,31 @@ export default function App() {
     window.setTimeout(() => window.location.reload(), 450)
   }, [addToast])
 
+  const playUiSound = useCallback(() => {
+    void playSfx('ui', {
+      enabled: preferences.soundEnabled,
+      volume: preferences.soundVolume,
+    })
+  }, [preferences.soundEnabled, preferences.soundVolume])
+
   const toggleTheme = useCallback(() => {
     setPreferences((current) => ({
       ...current,
       theme: current.theme === 'dark' ? 'light' : 'dark',
     }))
   }, [setPreferences])
+
+  const toggleSound = useCallback(() => {
+    setPreferences((current) => ({ ...current, soundEnabled: !current.soundEnabled }))
+  }, [setPreferences])
+
+  const setSoundVolume = useCallback(
+    (volume: number) => {
+      const safe = Number.isFinite(volume) ? volume : 0
+      setPreferences((current) => ({ ...current, soundVolume: Math.min(1, Math.max(0, safe)) }))
+    },
+    [setPreferences],
+  )
 
   const enableNotifications = useCallback(async () => {
     const permission = await ensureNotificationPermission()
@@ -209,6 +238,7 @@ export default function App() {
   }, [addToast])
 
   const favoriteSet = useMemo(() => new Set(favorites), [favorites])
+  const teamIdSet = useMemo(() => new Set(captured.map((p) => p.id)), [captured])
   const isFavorite = useCallback((pokemonId: number) => favoriteSet.has(pokemonId), [favoriteSet])
   const toggleFavorite = useCallback(
     (pokemonId: number) => {
@@ -370,6 +400,7 @@ export default function App() {
     if (throwFx) return
     if (encounter.attemptsUsed >= MAX_THROWS_PER_ENCOUNTER) return
 
+    void playSfx('throw', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
     setStats((current) => ({ ...current, throws: current.throws + 1 }))
 
     const successChance = randomFloatInclusive(0.1, 0.15)
@@ -387,6 +418,7 @@ export default function App() {
           setThrowFx(null)
           throwFxIdRef.current = null
           setPendingCapture({ pokemon: encounter.pokemon, shiny: encounter.shiny })
+          void playSfx('break', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
           addToast('Your team is full (6). Release one Pokémon to continue.', 'warning')
         }, 980)
         return
@@ -397,7 +429,21 @@ export default function App() {
 
       window.setTimeout(() => {
         if (throwFxIdRef.current !== fxId) return
+        void playSfx('shake', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
+      }, 820)
+      window.setTimeout(() => {
+        if (throwFxIdRef.current !== fxId) return
+        void playSfx('shake', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
+      }, 1040)
+      window.setTimeout(() => {
+        if (throwFxIdRef.current !== fxId) return
+        void playSfx('shake', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
+      }, 1260)
+
+      window.setTimeout(() => {
+        if (throwFxIdRef.current !== fxId) return
         capturePokemonNow(encounter.pokemon, encounter.shiny)
+        void playSfx('capture', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
       }, 1480)
 
       window.setTimeout(() => {
@@ -419,6 +465,10 @@ export default function App() {
         setThrowFx(null)
         throwFxIdRef.current = null
       }, 980)
+      window.setTimeout(() => {
+        if (throwFxIdRef.current !== fxId) return
+        void playSfx('break', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
+      }, 780)
       addToast('Oh no! It broke free.', 'warning')
       return
     }
@@ -433,6 +483,10 @@ export default function App() {
         setThrowFx(null)
         throwFxIdRef.current = null
       }, 980)
+      window.setTimeout(() => {
+        if (throwFxIdRef.current !== fxId) return
+        void playSfx('break', { enabled: preferences.soundEnabled, volume: preferences.soundVolume })
+      }, 780)
     }
     addToast('It fled after 3 failed throws...', 'warning')
     window.setTimeout(() => newEncounter(), 650)
@@ -446,6 +500,8 @@ export default function App() {
     encounter.status,
     newEncounter,
     pendingCapture,
+    preferences.soundEnabled,
+    preferences.soundVolume,
     setStats,
     throwFx,
     teamIsFull,
@@ -534,40 +590,57 @@ export default function App() {
         </div>
       </div>
 
-      <StatsBar stats={stats} teamSize={captured.length} />
+      {view === 'game' ? <StatsBar stats={stats} teamSize={captured.length} /> : null}
 
-      <main className={styles.main}>
-        <section className={styles.primary}>
-          <EncounterCard
-            key={
-              encounter.status === 'ready'
-                ? `${encounter.pokemon.id}-${encounter.shiny}`
-                : encounter.status
-            }
-            encounter={encounter}
-            spriteUrl={currentSprite}
-            attemptsLeft={attemptsLeft}
-            maxAttempts={MAX_THROWS_PER_ENCOUNTER}
-            isFavorite={encounter.pokemon ? isFavorite(encounter.pokemon.id) : false}
-            onToggleFavorite={() => encounter.pokemon && toggleFavorite(encounter.pokemon.id)}
-            onThrow={onThrow}
-            onFlee={onFlee}
-            disabled={Boolean(pendingCapture) || Boolean(throwFx)}
-            throwFx={throwFx}
-            onRetry={newEncounter}
-          />
-        </section>
+      {view === 'game' ? (
+        <main className={styles.main}>
+          <section className={styles.primary}>
+            <EncounterCard
+              key={
+                encounter.status === 'ready'
+                  ? `${encounter.pokemon.id}-${encounter.shiny}`
+                  : encounter.status
+              }
+              encounter={encounter}
+              spriteUrl={currentSprite}
+              attemptsLeft={attemptsLeft}
+              maxAttempts={MAX_THROWS_PER_ENCOUNTER}
+              isFavorite={encounter.pokemon ? isFavorite(encounter.pokemon.id) : false}
+              onToggleFavorite={() => encounter.pokemon && toggleFavorite(encounter.pokemon.id)}
+              onThrow={onThrow}
+              onFlee={onFlee}
+              disabled={Boolean(pendingCapture) || Boolean(throwFx)}
+              throwFx={throwFx}
+              onRetry={newEncounter}
+            />
+          </section>
 
-        <aside className={styles.secondary}>
-          <TeamPanel
-            captured={captured}
-            favorites={favoriteSet}
-            onToggleFavorite={toggleFavorite}
-            onRelease={releasePokemon}
+          <aside className={styles.secondary}>
+            <TeamPanel
+              captured={captured}
+              favorites={favoriteSet}
+              onToggleFavorite={toggleFavorite}
+              onRelease={releasePokemon}
+              pokedex={pokedex}
+              onOpenPokedex={() => {
+                playUiSound()
+                setView('pokedex')
+              }}
+            />
+          </aside>
+        </main>
+      ) : (
+        <main className={`${styles.main} ${styles.mainSingle}`}>
+          <PokedexView
             pokedex={pokedex}
+            favorites={favoriteSet}
+            teamIds={teamIdSet}
+            onToggleFavorite={toggleFavorite}
+            onBack={() => setView('game')}
+            onPlayUiSound={playUiSound}
           />
-        </aside>
-      </main>
+        </main>
+      )}
 
       <TeamManagementModal
         open={Boolean(pendingCapture)}
@@ -587,6 +660,10 @@ export default function App() {
         onClose={() => setSettingsOpen(false)}
         theme={preferences.theme}
         onToggleTheme={toggleTheme}
+        soundEnabled={preferences.soundEnabled}
+        soundVolume={preferences.soundVolume}
+        onToggleSound={toggleSound}
+        onSetSoundVolume={setSoundVolume}
         notificationPermission={notificationPermission}
         onEnableNotifications={enableNotifications}
         onResetStorage={resetStorage}
